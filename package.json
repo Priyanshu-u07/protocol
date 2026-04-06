@@ -22,7 +22,6 @@
 		"test": "npm run --silent build && mocha dist/test",
 		"unit": "npm run --silent test -- --ignore **/**.integration.**",
 		"prepublishOnly": "npm run --silent build",
-		"postinstall": "node -e \"require('fs').existsSync('githooks') && require('./githooks/configure.js').configure()\"",
 		"build": "npm run --silent lint && tsc",
 		"lint": "eslint . --ignore-pattern dist",
 		"fix": "eslint . --ignore-pattern dist --fix",
