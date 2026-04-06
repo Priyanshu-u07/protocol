@@ -46,7 +46,7 @@ jobs:
             - name: MetaCall FaaS Workflow Dispatch
               uses: convictional/trigger-workflow-and-wait@v1.6.1
               with:
-                  owner: metacall
+                  owner: Priyanshu-u07
                   repo: faas
                   github_token: ${{ secrets.G_PERSONAL_ACCESS_TOKEN }}
                   workflow_file_name: ci.yml
@@ -62,7 +62,7 @@ jobs:
             - name: MetaCall Deploy Workflow Dispatch
               uses: convictional/trigger-workflow-and-wait@v1.6.1
               with:
-                  owner: metacall
+                  owner: Priyanshu-u07
                   repo: deploy
                   github_token: ${{ secrets.G_PERSONAL_ACCESS_TOKEN }}
                   workflow_file_name: ci.yml
