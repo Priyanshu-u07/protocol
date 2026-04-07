@@ -231,10 +231,10 @@ class Request {
 
 		if (!res.ok) {
 			const data = await res.text().catch(() => null);
-			throw new Error(
-				`HTTP ${res.status}: ${res.statusText}${
-					data ? ` - ${data}` : ''
-				}`
+			throw new ProtocolError(
+				`HTTP ${res.status}: ${res.statusText}`,
+				res.status,
+				data
 			);
 		}
 
