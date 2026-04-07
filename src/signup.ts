@@ -1,4 +1,6 @@
 import { URL } from 'url';
+import { ProtocolError } from './protocol';
+
 interface Request {
 	email: string;
 	password: string;
@@ -34,7 +36,12 @@ export default async (
 	});
 
 	if (!res.ok) {
-		throw new Error(res.statusText);
+		const data = await res.text().catch(() => res.statusText);
+		throw new ProtocolError(
+			`HTTP ${res.status}: ${res.statusText}`,
+			res.status,
+			data
+		);
 	}
 
 	return res.text();
