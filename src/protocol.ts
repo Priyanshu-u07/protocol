@@ -230,11 +230,14 @@ class Request {
 		const res = await fetch(this.impl.url, config);
 
 		if (!res.ok) {
-			let data: unknown;
-			try {
-				data = await res.json();
-			} catch {
-				data = await res.text().catch(() => null);
+			const text = await res.text().catch(() => null);
+			let data: unknown = text;
+			if (text) {
+				try {
+					data = JSON.parse(text);
+				} catch {
+					// keep raw text as-is
+				}
 			}
 			throw new ProtocolError(
 				`HTTP ${res.status}: ${res.statusText}`,
