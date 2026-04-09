@@ -109,7 +109,7 @@ export interface API {
 	inspectByName(suffix: string): Promise<Deployment>;
 	upload(
 		name: string,
-		blob: unknown,
+		blob: Blob | Readable,
 		jsons?: MetaCallJSON[],
 		runners?: string[]
 	): Promise<Resource>;
@@ -229,8 +229,7 @@ class Request {
 		if (!res.ok) {
 			const data = await res.text().catch(() => null);
 			throw new Error(
-				`HTTP ${res.status}: ${res.statusText}${
-					data ? ` - ${data}` : ''
+				`HTTP ${res.status}: ${res.statusText}${data ? ` - ${data}` : ''
 				}`
 			);
 		}
@@ -553,7 +552,7 @@ export const waitFor = async <T>(
 		cancellation = `Operation cancelled with message: ${message}`;
 	};
 
-	for (;;) {
+	for (; ;) {
 		try {
 			return await fn(cancel);
 		} catch (error) {
@@ -569,10 +568,10 @@ export const waitFor = async <T>(
 					cancellation !== undefined
 						? cancellation
 						: isProtocolError(error)
-						? error.message
-						: error instanceof Error
-						? error.message
-						: String(error);
+							? error.message
+							: error instanceof Error
+								? error.message
+								: String(error);
 
 				throw new Error(
 					`Failed to execute '${func}' after ${maxRetries} retries: ${message}`
