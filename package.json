@@ -1,6 +1,6 @@
 {
 	"name": "@metacall/protocol",
-	"version": "0.1.29",
+	"version": "0.1.31",
 	"description": "Tool for deploying into MetaCall FaaS platform.",
 	"exports": {
 		"./*": "./dist/*.js",
@@ -19,10 +19,10 @@
 	},
 	"scripts": {
 		"pretest": "npm --prefix ./src/test/resources/integration/api install",
+		"prepare": "npm run --silent build",
 		"test": "npm run --silent build && mocha dist/test",
 		"unit": "npm run --silent test -- --ignore **/**.integration.**",
 		"prepublishOnly": "npm run --silent build",
-		"postinstall": "node -e \"require('fs').existsSync('githooks') && require('./githooks/configure.js').configure()\"",
 		"build": "npm run --silent lint && tsc",
 		"lint": "eslint . --ignore-pattern dist",
 		"fix": "eslint . --ignore-pattern dist --fix",
