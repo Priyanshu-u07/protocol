@@ -339,7 +339,9 @@ export default (token: string, baseURL: string): API => {
 
 			if (data instanceof Blob) {
 				fd.append('raw', data, `${name}.zip`);
-			} else if (data instanceof Readable) {
+			} else if (
+				typeof (data as { pipe?: unknown }).pipe === 'function'
+			) {
 				// This is terrible but NodeJS does not ensure that streaming and zero
 				// copy will be performed anyway, as the sizes are not really big (150mb is the limit)
 				// we can do this nasty intermediate buffer creation and forget about it
