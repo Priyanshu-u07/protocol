@@ -424,7 +424,7 @@ export default (token: string, baseURL: string): API => {
 					suffix,
 					version
 				})
-				.asJson<string>(),
+				.asText(),
 
 		logs: (
 			container: string,
