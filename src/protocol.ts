@@ -227,11 +227,19 @@ class Request {
 		const res = await fetch(this.impl.url, config);
 
 		if (!res.ok) {
-			const data = await res.text().catch(() => null);
-			throw new Error(
-				`HTTP ${res.status}: ${res.statusText}${
-					data ? ` - ${data}` : ''
-				}`
+			const text = await res.text().catch(() => null);
+			let data: unknown = text;
+			if (text) {
+				try {
+					data = JSON.parse(text);
+				} catch {
+					// keep raw text as-is
+				}
+			}
+			throw new ProtocolError(
+				`HTTP ${res.status}: ${res.statusText}`,
+				res.status,
+				data
 			);
 		}
 
