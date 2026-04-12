@@ -411,12 +411,12 @@ export default (token: string, baseURL: string): API => {
 				})
 				.asJson<Create>(),
 
-		deployDelete: (
+		deployDelete: async (
 			prefix: string,
 			suffix: string,
 			version = 'v1'
-		): Promise<string> =>
-			request()
+		): Promise<string> => {
+			const res = await request()
 				.url('/api/deploy/delete')
 				.method('POST')
 				.body({
@@ -424,7 +424,21 @@ export default (token: string, baseURL: string): API => {
 					suffix,
 					version
 				})
-				.asText(),
+				.asJson<unknown>();
+
+			// Debug: log raw API response to diagnose CI
+			// eslint-disable-next-line no-console
+			console.log(
+				'DEBUG deployDelete raw response:',
+				JSON.stringify(res)
+			);
+
+			if (typeof res === 'string') return res;
+			if (res && typeof res === 'object' && 'message' in res) {
+				return String((res as Record<string, unknown>).message);
+			}
+			return String(res);
+		},
 
 		logs: (
 			container: string,
